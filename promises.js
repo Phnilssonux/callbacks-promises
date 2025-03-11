@@ -8,26 +8,33 @@ function checkNumber(num) {
     });
 }
 
-checkNumber(15)
-    .then(result => console.log(result))
-    .catch(error => console.log(error));
-
-
-
-function fetchData() {
-    fetch('https://jsonplaceholder.typicode.com/posts/1')
-        .then(response => {
-            if(!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return response.json();
-
-        })
-        .then(data => {
-            console.log("Fetched Data:", data);
-            document.body.innerHTML = `<h2>${data.title}</h2><p>${data.body}</p>`;
-        })
-        .catch(error => console.error("Fetch Error:", error));
+async function checkNumberAsync(num) {
+    try {
+        const result = await checkNumber(num);
+        console.log(result);
+    } catch (error) {
+        console.log(error);
+    }
+    
 }
 
-fetchData();
+checkNumberAsync(15);
+checkNumberAsync(5);
+
+
+
+const fetchData = async () => {
+    try {
+        const response = await fetch('https://jsonplaceholder.typicode.com/posts/1');
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Fetched Data:" data);
+
+        document.body.innerHTML = `<h2>${data.title}</h2><p>${data.body}</p>`;
+    } catch (error) {
+        console.log("Fetch Error:", error);
+    }
+};
